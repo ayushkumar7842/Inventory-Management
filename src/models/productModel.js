@@ -9,6 +9,21 @@ export default class ProductModel {
   static get() {
     return products;
   }
+
+  // add the product
+  static addProduct(product) {
+    // create the instance for new product
+    const newProduct = new ProductModel(
+      products.length + 1,
+      product.name,
+      product.description,
+      product.price,
+      product.imageUrl
+    );
+    // push the new product into the array
+    products.push(newProduct);
+    return products;
+  }
 }
 
 let products = [
