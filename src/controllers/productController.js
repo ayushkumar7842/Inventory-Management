@@ -1,5 +1,5 @@
-import path from "path";
 import ProductModel from "../models/productModel.js";
+import { validateProduct } from "../utils/validateProduct.js";
 
 export default class ProductController {
   // get all the products
@@ -21,24 +21,8 @@ export default class ProductController {
   createProduct = (req, res) => {
     const { name, description, price, imageUrl } = req.body;
 
-    const errors = [];
+    const errors = validateProduct({ name, description, price, imageUrl });
 
-    // Validations
-    if (!name || name.trim() === "") {
-      errors.push("Name is required.");
-    }
-    if (!description || description.trim() === "") {
-      errors.push("Description is required.");
-    }
-    if (!price || isNaN(price) || Number(price) <= 0) {
-      errors.push("Price must be a positive number.");
-    }
-    if (!imageUrl) {
-      errors.push("Image URL is not valid.");
-    }
-
-    console.log(errors);
-    // If errors, show them in form
     if (errors.length > 0) {
       return res.status(400).render("createProduct", {
         errors,
@@ -47,14 +31,8 @@ export default class ProductController {
     }
 
     // Save product
-    const products = ProductModel.addProduct({
-      name,
-      description,
-      price,
-      imageUrl,
-    });
+    ProductModel.addProduct({ name, description, price, imageUrl });
 
-    console.log(products);
     res.redirect("/products");
   };
 }
