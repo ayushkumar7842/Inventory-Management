@@ -43,6 +43,10 @@ export default class ProductController {
 
     const product = ProductModel.getProductDetailsById(productId);
 
+    if (!product) {
+      return res.render("error", { error: "Product not found" });
+    }
+
     const { name, description, price, imageUrl } = product;
     res.render("createProduct", {
       product: { productId, name, description, price, imageUrl },
@@ -57,7 +61,7 @@ export default class ProductController {
 
     const { id } = req.params;
 
-    const productId = parseInt(id);
+    const productId = Number(id);
     // validate the data
     const errors = validateProduct({ name, description, price, imageUrl });
 
@@ -89,7 +93,7 @@ export default class ProductController {
     }
 
     // parse the product ID
-    const productId = parseInt(id);
+    const productId = NUmber(id);
 
     const isDelete = ProductModel.deleteById(productId);
 
