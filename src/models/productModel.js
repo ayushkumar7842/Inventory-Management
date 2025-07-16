@@ -1,11 +1,12 @@
 export default class ProductModel {
-  constructor(_id, _name, _desc, _price, _imageUrl) {
-    this.id = _id;
-    this.name = _name;
-    this.desc = _desc;
-    this.price = _price;
-    this.imageUrl = _imageUrl;
+  constructor(id, name, description, price, imageUrl) {
+    this.id = id;
+    this.name = name;
+    this.description = description;
+    this.price = price;
+    this.imageUrl = imageUrl;
   }
+
   static get() {
     return products;
   }
@@ -23,6 +24,32 @@ export default class ProductModel {
     // push the new product into the array
     products.push(newProduct);
     return products;
+  }
+
+  // get the product details by ID
+  static getProductDetailsById(productID) {
+    const product = products.find((product) => {
+      return product.id === productID;
+    });
+
+    return product;
+  }
+
+  // save the product by ID
+  static saveProductById(productId, productData) {
+    const product = this.getProductDetailsById(productId);
+
+    if (!product) {
+      return false;
+    }
+
+    product.name = productData.name;
+    product.description = productData.description;
+    product.price = productData.price;
+    product.imageUrl = productData.imageUrl;
+
+    // the product is updated and saved
+    return true;
   }
 }
 

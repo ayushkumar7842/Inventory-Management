@@ -20,8 +20,14 @@ app.use(express.static("public"));
 // instance of the product controller
 const productController = new ProductController();
 
+// ge the product with the given ID
+app.get("/products/:id/update", productController.getProductById);
+
 // View all products
 app.get("/products", productController.getAllProducts);
+
+// update the products by id using post method
+app.post("/products/:id", productController.updateProductById);
 
 // Render the create product form
 app.get("/products/create", productController.renderCreateProduct);

@@ -11,10 +11,7 @@ export default class ProductController {
 
   // render the form of the create product page
   renderCreateProduct = (req, res) => {
-    res.render("createProduct", {
-      errors: [],
-      formData: {},
-    });
+    res.render("createProduct");
   };
 
   // create the product
@@ -26,12 +23,61 @@ export default class ProductController {
     if (errors.length > 0) {
       return res.status(400).render("createProduct", {
         errors,
-        formData: { name, description, price, imageUrl },
+        product: { name, description, price, imageUrl },
       });
     }
 
     // Save product
     ProductModel.addProduct({ name, description, price, imageUrl });
+
+    res.redirect("/products");
+  };
+
+  // get product with ID
+  getProductById = (req, res) => {
+    // get the data
+    const { id } = req.params;
+
+    // validate the data
+    const productId = Number(id);
+
+    const product = ProductModel.getProductDetailsById(productId);
+
+    const { name, description, price, imageUrl } = product;
+    res.render("createProduct", {
+      product: { productId, name, description, price, imageUrl },
+      isEdit: true,
+    });
+  };
+
+  // save the product by ID
+  updateProductById = (req, res) => {
+    // get the data
+    const { name, description, price, imageUrl } = req.body;
+
+    const { id } = req.params;
+
+    const productId = parseInt(id);
+    // validate the data
+    const errors = validateProduct({ name, description, price, imageUrl });
+
+    if (errors.length > 0) {
+      return res.status(400).render("createProduct", {
+        errors,
+        product: { productId, name, description, price, imageUrl },
+        isEdit: true,
+      });
+    }
+
+    // perform the operation
+    const isUpdated = ProductModel.saveProductById(productId, req.body);
+
+    if (!isUpdated) {
+      return res.status(401).json({
+        success: false,
+        message: "product is not updated",
+      });
+    }
 
     res.redirect("/products");
   };
