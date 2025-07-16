@@ -33,7 +33,7 @@ app.post("/products/:id", productController.updateProductById);
 // delete the product by ID
 app.get("/products/:id/delete", productController.deleteProductById);
 
-// This middleware catches all unmatched requests
+// This middleware catches all unmatched requests and routes
 app.use((req, res) => {
   res.status(404).render("pageNotFound");
 });
