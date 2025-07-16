@@ -36,7 +36,7 @@ export default class ProductModel {
   }
 
   // save the product by ID
-  static saveProductById(productId, productData) {
+  static updateById(productId, productData) {
     const product = this.getProductDetailsById(productId);
 
     if (!product) {
@@ -49,6 +49,21 @@ export default class ProductModel {
     product.imageUrl = productData.imageUrl;
 
     // the product is updated and saved
+    return true;
+  }
+
+  // delete the product by ID
+  static deleteById(productId) {
+    const product = this.getProductDetailsById(productId);
+    // if product is not found
+    if (!product) {
+      return false;
+    }
+
+    products = products.filter((product) => {
+      return product.id !== productId;
+    });
+
     return true;
   }
 }

@@ -27,7 +27,8 @@
             <th>Description</th>
             <th>Price</th>
             <th>Image</th>
-            <th>Action</th>
+            <th>Edit</th>
+            <th>Delete</th>
           </tr>
         </thead>
         <tbody>
@@ -42,9 +43,14 @@
             </td>
             <td>
               <a
-                href="/products/<%= product.id %>/update"
+                href="/products/<%= product.id %>/edit"
                 class="btn btn-primary"
                 >Edit</a
+              >
+            </td>
+            <td>
+              <a href="/products/<%= product.id %>/delete" class="btn btn-danger"
+                >Delete</a
               >
             </td>
           </tr>

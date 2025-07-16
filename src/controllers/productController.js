@@ -70,13 +70,31 @@ export default class ProductController {
     }
 
     // perform the operation
-    const isUpdated = ProductModel.saveProductById(productId, req.body);
+    const isUpdated = ProductModel.updateById(productId, req.body);
 
     if (!isUpdated) {
-      return res.status(401).json({
-        success: false,
-        message: "product is not updated",
-      });
+      return res.render("error", { error: "product is not updated" });
+    }
+
+    res.redirect("/products");
+  };
+
+  // delete the product by ID
+  deleteProductById = (req, res) => {
+    // get the product Id
+    const { id } = req.params;
+    // validate the product ID
+    if (!id) {
+      return res.render("error", { error: "Invalid Product ID" });
+    }
+
+    // parse the product ID
+    const productId = parseInt(id);
+
+    const isDelete = ProductModel.deleteById(productId);
+
+    if (!isDelete) {
+      return res.render("error", { error: "Invalid Product ID" });
     }
 
     res.redirect("/products");

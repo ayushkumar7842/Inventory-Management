@@ -20,20 +20,23 @@ app.use(express.static("public"));
 // instance of the product controller
 const productController = new ProductController();
 
-// ge the product with the given ID
-app.get("/products/:id/update", productController.getProductById);
-
-// View all products
+// list all products
 app.get("/products", productController.getAllProducts);
-
-// update the products by id using post method
-app.post("/products/:id", productController.updateProductById);
-
-// Render the create product form
+// show create form to create product
 app.get("/products/create", productController.renderCreateProduct);
-
-// Handle form submission to create a product
+// create the product
 app.post("/products", productController.createProduct);
+// show edit form for a particular product
+app.get("/products/:id/edit", productController.getProductById);
+// update the product by ID
+app.post("/products/:id", productController.updateProductById);
+// delete the product by ID
+app.get("/products/:id/delete", productController.deleteProductById);
+
+// This middleware catches all unmatched requests
+app.use((req, res) => {
+  res.status(404).render("pageNotFound");
+});
 
 app.listen(PORT, () => {
   console.log("server is running at PORT", PORT);
